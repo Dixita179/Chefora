@@ -1,0 +1,119 @@
+/* ==========================
+   CATEGORY SECTION
+========================== */
+
+.categories{
+    padding:90px 8%;
+    background:#f8f8f8;
+}
+
+.categories-container{
+    max-width:1300px;
+    margin:auto;
+}
+
+.categories-title{
+    text-align:center;
+    font-size:48px;
+    font-family:'Playfair Display',serif;
+    color:#222;
+    margin-bottom:60px;
+    position:relative;
+}
+
+.categories-title::after{
+    content:"";
+    width:90px;
+    height:4px;
+    background:#B11226;
+    display:block;
+    margin:15px auto 0;
+    border-radius:5px;
+}
+
+/* ==========================
+   GRID
+========================== */
+
+.categories-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:30px;
+}
+
+/* ==========================
+   CARD
+========================== */
+
+.category-box{
+    background:#fff;
+    border-radius:25px;
+    padding:40px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:.4s ease;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    border:2px solid transparent;
+}
+
+.category-box:hover{
+    transform:translateY(-10px);
+    border-color:#B11226;
+    box-shadow:0 20px 45px rgba(177,18,38,.25);
+}
+
+.category-box h3{
+    color:#222;
+    font-size:22px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.category-box:hover h3{
+    color:#B11226;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media(max-width:992px){
+
+    .categories-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .categories{
+        padding:70px 25px;
+    }
+
+    .categories-title{
+        font-size:38px;
+    }
+
+    .categories-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:20px;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .categories-grid{
+        grid-template-columns:1fr;
+    }
+
+    .category-box{
+        padding:30px;
+    }
+
+    .categories-title{
+        font-size:32px;
+    }
+
+}

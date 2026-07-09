@@ -1,0 +1,174 @@
+/* ===========================
+   FOOTER
+=========================== */
+
+.footer {
+  background: #111;
+  color: #fff;
+  padding: 70px 8% 20px;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 50px;
+}
+
+.footer-logo h2 {
+  font-size: 32px;
+  margin-bottom: 15px;
+  font-family: "Playfair Display", serif;
+}
+
+.footer-logo span {
+  color: #B11226;
+}
+
+.footer-logo p {
+  color: #bbb;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+/* ===========================
+   SOCIAL ICONS
+=========================== */
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.social-icons a {
+  width: 45px;
+  height: 45px;
+  background: #1d1d1d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  background: #B11226;
+  transform: translateY(-6px);
+}
+
+/* ===========================
+   LINKS
+=========================== */
+
+.footer-links h3,
+.footer-contact h3 {
+  margin-bottom: 20px;
+  color: white;
+  font-size: 22px;
+}
+
+.footer-links ul {
+  list-style: none;
+}
+
+.footer-links ul li {
+  margin-bottom: 12px;
+}
+
+.footer-links ul li a {
+  color: #bbb;
+  text-decoration: none;
+  transition: .3s;
+}
+
+.footer-links ul li a:hover {
+  color: #B11226;
+  padding-left: 6px;
+}
+
+/* ===========================
+   CONTACT
+=========================== */
+
+.footer-contact p {
+  margin-bottom: 15px;
+  color: #bbb;
+  line-height: 1.6;
+}
+
+.footer-contact i {
+  color: #B11226;
+  margin-right: 10px;
+}
+
+/* ===========================
+   COPYRIGHT
+=========================== */
+
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid #2c2c2c;
+  text-align: center;
+}
+
+.footer-bottom p {
+  color: #999;
+  font-size: 15px;
+}
+
+.footer-bottom span {
+  color: #B11226;
+  font-weight: 600;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 992px) {
+
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .footer {
+    padding: 60px 25px 20px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .social-icons {
+    justify-content: center;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .footer-logo h2 {
+    font-size: 28px;
+  }
+
+  .footer-links h3,
+  .footer-contact h3 {
+    font-size: 20px;
+  }
+
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+}

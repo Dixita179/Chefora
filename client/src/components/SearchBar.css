@@ -1,0 +1,150 @@
+/* ===========================
+   SEARCH SECTION
+=========================== */
+
+.search-section{
+    padding:90px 8%;
+    background:linear-gradient(135deg,#111,#1d1d1d);
+}
+
+.search-container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.search-content{
+    text-align:center;
+}
+
+.search-content h2{
+    font-size:48px;
+    color:white;
+    margin-bottom:20px;
+    font-family:'Playfair Display',serif;
+}
+
+.search-content p{
+    color:#d4d4d4;
+    max-width:700px;
+    margin:0 auto 40px;
+    line-height:1.8;
+    font-size:18px;
+}
+
+/* ===========================
+   SEARCH BOX
+=========================== */
+
+.search-box{
+
+    max-width:750px;
+
+    margin:auto;
+
+    display:flex;
+
+    background:white;
+
+    border-radius:60px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.3);
+
+}
+
+.search-box input{
+
+    flex:1;
+
+    border:none;
+
+    outline:none;
+
+    padding:22px 30px;
+
+    font-size:17px;
+
+}
+
+.search-box input::placeholder{
+
+    color:#999;
+
+}
+
+.search-box button{
+
+    width:90px;
+
+    border:none;
+
+    background:#B11226;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.search-box button:hover{
+
+    background:#8E0E1D;
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+.search-section{
+
+padding:70px 25px;
+
+}
+
+.search-content h2{
+
+font-size:34px;
+
+}
+
+.search-content p{
+
+font-size:16px;
+
+}
+
+.search-box{
+
+flex-direction:column;
+
+border-radius:20px;
+
+}
+
+.search-box input{
+
+width:100%;
+
+padding:18px;
+
+}
+
+.search-box button{
+
+width:100%;
+
+padding:18px;
+
+font-size:20px;
+
+}
+
+}
