@@ -1,0 +1,77 @@
+.recipe-details{
+    background:#f8f8f8;
+    min-height:100vh;
+    padding-bottom:50px;
+}
+
+.back-btn{
+    display:inline-block;
+    margin:20px;
+    color:#B11226;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.recipe-banner{
+    width:100%;
+    height:450px;
+    object-fit:cover;
+}
+
+.recipe-container{
+    width:80%;
+    margin:auto;
+    background:white;
+    padding:35px;
+    margin-top:-60px;
+    position:relative;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.15);
+}
+
+.recipe-container h1{
+    color:#B11226;
+    margin-bottom:10px;
+}
+
+.chef-name{
+    color:gray;
+    margin-bottom:25px;
+}
+
+.recipe-meta{
+    display:flex;
+    gap:30px;
+    align-items:center;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.fav-btn{
+    background:#B11226;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.description{
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.recipe-video{
+    border-radius:12px;
+    margin:20px 0 40px;
+}
+
+.ingredients li,
+.steps li{
+    margin-bottom:12px;
+    line-height:1.8;
+}
+
+.ingredients{
+    margin-bottom:40px;
+}

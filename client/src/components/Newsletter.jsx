@@ -9,7 +9,7 @@ function Newsletter() {
 
           <div className="grid md:grid-cols-2 gap-10 items-center">
 
-            {/* Left Content */}
+          
             <div>
               <h2 className="text-4xl md:text-5xl font-bold leading-tight">
                 Never Miss a Recipe!
@@ -22,7 +22,7 @@ function Newsletter() {
               </p>
             </div>
 
-            {/* Right Content */}
+          
             <div>
 
               <div className="bg-white rounded-full p-2 flex items-center shadow-lg">

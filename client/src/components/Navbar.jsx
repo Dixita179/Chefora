@@ -20,19 +20,17 @@ function Navbar() {
 
   return (
     <nav className={scroll ? "navbar active" : "navbar"}>
-      {/* Logo */}
+     
       <div className="logo">
         <Link to="/">
-          {/* Uncomment if you want to use your logo image */}
-          {/* <img src={logo} alt="Chefora Logo" /> */}
-
+          
           <h2>
             Che<span>fora</span>
           </h2>
         </Link>
       </div>
 
-      {/* Navigation Links */}
+     
       <ul className={menuOpen ? "nav-links active" : "nav-links"}>
         <li>
           <Link to="/">Home</Link>
@@ -55,7 +53,7 @@ function Navbar() {
         </li>
       </ul>
 
-      {/* Right Side */}
+     
       <div className="nav-right">
         <FaSearch className="search" />
 

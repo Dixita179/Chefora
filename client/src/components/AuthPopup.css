@@ -1,0 +1,53 @@
+.auth-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.auth-popup {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 360px;
+  width: 90%;
+  position: relative;
+  text-align: center;
+}
+
+.auth-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.auth-popup-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.auth-popup-btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-popup-btn.login {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.auth-popup-btn.register {
+  background: #ff6b35; /* swap for your brand color */
+  color: #fff;
+}

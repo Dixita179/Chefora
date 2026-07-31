@@ -1,100 +1,111 @@
 import "./RecipeCard.css";
+import { Link } from "react-router-dom";
+import { FaStar, FaClock, FaHeart, FaSearch } from "react-icons/fa";
+import { useState } from "react";
 
-import recipe1 from "../assets/images/recipe1.jpg";
-import recipe3 from "../assets/images/recipe3.jpg";
-import cake1 from "../assets/images/cake1.jpg";
+function RecipeCard({ recipes = [] }) {
+  const [searchTerm, setSearchTerm] = useState("");
 
-import { FaStar, FaClock, FaHeart } from "react-icons/fa";
+  const filteredRecipes = recipes.filter((recipe) =>
+    recipe.title?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-const recipes = [
-  {
-    title: "Mix Salad",
-    image: recipe1,
-    rating: "4.8",
-    time: "25 mins",
-  },
-  {
-    title: "Chicken Biryani",
-    image: recipe3,
-    rating: "4.9",
-    time: "45 mins",
-  },
-  {
-    title: "Chocolate Cake",
-    image: cake2,
-    rating: "5.0",
-    time: "60 mins",
-  },
-];
-
-function RecipeCard() {
   return (
     <section className="recipes">
-
       <div className="recipes-container">
 
-        <div className="section-heading">
+        <div className="recipe-search-box">
+          <FaSearch />
+          <input
+            type="text"
+            placeholder="Search recipes..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
+        <div className="section-heading">
           <span>TRENDING RECIPES</span>
 
           <h2>Discover Popular Recipes</h2>
 
           <p>
-            Explore delicious recipes loved by thousands of food lovers around the world.
+            Explore delicious recipes loved by thousands of food lovers around
+            the world.
           </p>
-
         </div>
 
         <div className="recipe-grid">
 
-          {recipes.map((recipe) => (
+          {filteredRecipes.length === 0 ? (
 
-            <div className="recipe-card" key={recipe.title}>
+            <h3>No Recipes Found 😢</h3>
 
-              <div className="recipe-image">
+          ) : (
 
-                <img src={recipe.image} alt={recipe.title} />
+            filteredRecipes.map((recipe) => (
 
-                <div className="recipe-overlay">
+              <div className="recipe-card" key={recipe._id}>
 
-                  <button>View Recipe</button>
+                <div className="recipe-image">
+
+                  <img
+                    src={
+                      recipe.image
+                        ? recipe.image.startsWith("http")
+                          ? recipe.image
+                          : `http://localhost:5000${recipe.image}`
+                        : "/default-recipe.jpg"
+                    }
+                    alt={recipe.title}
+                  />
+
+                  <div className="recipe-overlay">
+
+                    <Link
+                      to={`/recipe/${recipe._id}`}
+                      state={recipe}
+                    >
+                      <button className="view-btn">
+                        View Recipe
+                      </button>
+                    </Link>
+
+                  </div>
+
+                  <div className="favorite">
+                    <FaHeart />
+                  </div>
 
                 </div>
 
-                <div className="favorite">
+                <div className="recipe-content">
 
-                  <FaHeart />
+                  <h3>{recipe.title}</h3>
+
+                  <div className="recipe-meta">
+
+                    <span>
+                      <FaStar /> {recipe.rating || "5.0"}
+                    </span>
+
+                    <span>
+                      <FaClock /> {recipe.time}
+                    </span>
+
+                  </div>
 
                 </div>
 
               </div>
 
-              <div className="recipe-content">
+            ))
 
-                <h3>{recipe.title}</h3>
-
-                <div className="recipe-meta">
-
-                  <span>
-                    <FaStar /> {recipe.rating}
-                  </span>
-
-                  <span>
-                    <FaClock /> {recipe.time}
-                  </span>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          ))}
+          )}
 
         </div>
 
       </div>
-
     </section>
   );
 }
