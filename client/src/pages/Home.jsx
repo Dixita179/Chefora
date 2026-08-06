@@ -9,39 +9,27 @@ import WhyUs from "../components/WhyUs";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import AuthPopup from "../components/AuthPopup";
-import FeaturedVideo from "./FeaturedVideo"; // adjust path
+import FeaturedVideo from "../components/FeaturedVideo";
 
-  
 function Home() {
-
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch all recipes from MongoDB
   useEffect(() => {
-
     const fetchRecipes = async () => {
-
       try {
-
         const res = await axios.get(
-          "http://localhost:5000/api/recipes"
+          "https://chefora-5n7r.onrender.com/api/recipes"
         );
 
         setRecipes(res.data);
-
-      }
-
-      catch(error){
-
+      } catch (error) {
         console.log(error);
-
       }
-
     };
 
     fetchRecipes();
-
   }, []);
 
   const filteredRecipes = recipes.filter((recipe) =>
@@ -49,30 +37,25 @@ function Home() {
   );
 
   return (
-
     <>
       <AuthPopup delay={5000} />
 
       <Hero />
-<FeaturedVideo />
-      <SearchBar
-        value={searchTerm}
-        onSearch={setSearchTerm}
-      />
+      <FeaturedVideo />
+
+      <SearchBar value={searchTerm} onSearch={setSearchTerm} />
 
       <CategoryCard />
 
-      
+      <RecipeCard recipes={filteredRecipes} />
+
       <WhyUs />
 
       <Newsletter />
 
       <Footer />
-
     </>
-
   );
-
 }
 
 export default Home;

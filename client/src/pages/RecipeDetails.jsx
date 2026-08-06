@@ -7,7 +7,36 @@ import {
   FaHeart,
   FaPlayCircle,
   FaArrowLeft,
+  FaYoutube,
 } from "react-icons/fa";
+
+// Extracts a playable embed URL from common YouTube link formats
+function getYoutubeEmbedUrl(url) {
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+
+    let videoId = null;
+
+    if (parsed.hostname.includes("youtu.be")) {
+      videoId = parsed.pathname.slice(1);
+    } else if (parsed.hostname.includes("youtube.com")) {
+      videoId = parsed.searchParams.get("v");
+
+      if (!videoId && parsed.pathname.includes("/embed/")) {
+        videoId = parsed.pathname.split("/embed/")[1];
+      }
+      if (!videoId && parsed.pathname.includes("/shorts/")) {
+        videoId = parsed.pathname.split("/shorts/")[1];
+      }
+    }
+
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+  } catch {
+    return null;
+  }
+}
 
 function RecipeDetails() {
   const { id } = useParams();
@@ -60,6 +89,8 @@ function RecipeDetails() {
     );
   }
 
+  const youtubeEmbedUrl = getYoutubeEmbedUrl(recipe.youtubeLink);
+
   return (
     <div className="recipe-details-page">
       <Link to="/recipes" className="back-btn">
@@ -104,7 +135,29 @@ function RecipeDetails() {
           <FaPlayCircle /> Recipe Video
         </h2>
 
-        {recipe.video ? (
+        {youtubeEmbedUrl ? (
+          <>
+            <div className="recipe-video-embed-wrapper">
+              <iframe
+                src={youtubeEmbedUrl}
+                title={`${recipe.title} - YouTube video`}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="recipe-video-embed"
+              ></iframe>
+            </div>
+
+            <a
+              href={recipe.youtubeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="youtube-external-link"
+            >
+              <FaYoutube /> Watch on YouTube
+            </a>
+          </>
+        ) : recipe.video ? (
           <video controls width="100%" className="recipe-video">
             <source
               src={`https://chefora-5n7r.onrender.com${recipe.video}`}

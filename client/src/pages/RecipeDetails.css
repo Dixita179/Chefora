@@ -75,3 +75,32 @@
 .ingredients{
     margin-bottom:40px;
 }
+.recipe-video-embed-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  margin-bottom: 12px;
+}
+
+.recipe-video-embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.youtube-external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ff0000;
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.youtube-external-link:hover {
+  text-decoration: underline;
+}

@@ -1,5 +1,4 @@
 import "./RecipeCard.css";
-import { Link } from "react-router-dom";
 import { FaStar, FaClock, FaHeart, FaSearch } from "react-icons/fa";
 import { useState } from "react";
 
@@ -69,16 +68,23 @@ function RecipeCard({ recipes = [] }) {
 
                 <div className="recipe-overlay">
 
-                  <Link 
-                    to={`/recipe/${recipe._id}`}
-                    state={recipe}
+                  <a
+                    href={recipe.youtubeLink || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      if (!recipe.youtubeLink) {
+                        e.preventDefault();
+                        alert("No YouTube video linked for this recipe yet.");
+                      }
+                    }}
                   >
 
                     <button className="view-btn">
                       View Recipe
                     </button>
 
-                  </Link>
+                  </a>
 
                 </div>
 
