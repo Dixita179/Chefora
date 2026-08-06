@@ -1,8 +1,11 @@
 import "./Hero.css";
+import { useNavigate } from "react-router-dom";
 import { FaArrowRight, FaPlay, FaStar } from "react-icons/fa";
 import hero from "../assets/images/hero.jpg";
 
 function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="hero">
 
@@ -30,12 +33,22 @@ function Hero() {
 
           <div className="hero-buttons">
 
-            <button className="primary-btn">
+            <button
+              className="primary-btn"
+              onClick={() => navigate("/recipes")}
+            >
               Explore Recipes
               <FaArrowRight />
             </button>
 
-            <button className="secondary-btn">
+            <button
+              className="secondary-btn"
+              onClick={() => {
+                document
+                  .getElementById("recipes-section")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               <FaPlay />
               Watch Video
             </button>
@@ -47,8 +60,6 @@ function Hero() {
         <div className="hero-right">
 
           <img src={hero} alt="Food" />
-
-          
 
         </div>
 

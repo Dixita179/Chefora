@@ -9,7 +9,17 @@ import WhyUs from "../components/WhyUs";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import AuthPopup from "../components/AuthPopup";
+import FeaturedVideo from "./FeaturedVideo"; // adjust path
 
+   function Home() {
+     return (
+       <>
+         <Hero />
+         <FeaturedVideo />
+         {/* rest of your page, like RecipeCard list */}
+       </>
+     );
+   }
 function Home() {
 
   const [recipes, setRecipes] = useState([]);

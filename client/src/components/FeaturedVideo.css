@@ -1,0 +1,29 @@
+.featured-video-section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.featured-video-wrapper {
+  max-width: 800px;
+  margin: 30px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.featured-video-player {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.view-full-recipe-link {
+  color: #d81f2c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.view-full-recipe-link:hover {
+  text-decoration: underline;
+}
