@@ -10,6 +10,7 @@ function UploadRecipe() {
     difficulty: "",
     ingredients: "",
     instructions: "",
+    youtubeLink: "",
   });
 
   const [imageFile, setImageFile] = useState(null);
@@ -57,6 +58,7 @@ function UploadRecipe() {
       formData.append("difficulty", recipe.difficulty);
       formData.append("ingredients", recipe.ingredients);
       formData.append("instructions", recipe.instructions);
+      formData.append("youtubeLink", recipe.youtubeLink);
 
       if (imageFile) formData.append("image", imageFile);
       if (videoFile) formData.append("video", videoFile);
@@ -80,6 +82,7 @@ function UploadRecipe() {
         difficulty: "",
         ingredients: "",
         instructions: "",
+        youtubeLink: "",
       });
 
       setImageFile(null);
@@ -190,6 +193,18 @@ function UploadRecipe() {
             />
           </div>
 
+          <div className="form-group">
+            <label>▶️ YouTube Video Link (optional)</label>
+
+            <input
+              type="url"
+              name="youtubeLink"
+              value={recipe.youtubeLink}
+              onChange={handleChange}
+              placeholder="https://www.youtube.com/watch?v=..."
+            />
+          </div>
+
           <div className="row">
             <div className="form-group">
               <label>📷 Recipe Image</label>
@@ -214,7 +229,7 @@ function UploadRecipe() {
             </div>
 
             <div className="form-group">
-              <label>🎥 Recipe Video</label>
+              <label>🎥 Recipe Video (optional if YouTube link provided)</label>
 
               <input
                 type="file"
