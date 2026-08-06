@@ -100,7 +100,9 @@ function RecipeDetails() {
       <img
         src={
           recipe.image
-            ? `https://chefora-5n7r.onrender.com${recipe.image}`
+            ? recipe.image.startsWith("http")
+              ? recipe.image
+              : `https://chefora-5n7r.onrender.com${recipe.image}`
             : "https://via.placeholder.com/1200x450"
         }
         alt={recipe.title}
@@ -160,7 +162,11 @@ function RecipeDetails() {
         ) : recipe.video ? (
           <video controls width="100%" className="recipe-video">
             <source
-              src={`https://chefora-5n7r.onrender.com${recipe.video}`}
+              src={
+                recipe.video.startsWith("http")
+                  ? recipe.video
+                  : `https://chefora-5n7r.onrender.com${recipe.video}`
+              }
               type="video/mp4"
             />
             Your browser does not support the video tag.
