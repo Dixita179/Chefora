@@ -48,8 +48,9 @@ function UploadRecipe() {
 
     try {
       const formData = new FormData();
-formData.append("author", "Dikshita");
-formData.append("source", "user");
+
+      formData.append("author", "Dikshita");
+      formData.append("source", "user");
       formData.append("title", recipe.title);
       formData.append("category", recipe.category);
       formData.append("time", recipe.time);
@@ -61,7 +62,7 @@ formData.append("source", "user");
       if (videoFile) formData.append("video", videoFile);
 
       const res = await axios.post(
-        "http://localhost:5000/api/recipes/upload",
+        "https://chefora-5n7r.onrender.com/api/recipes/upload",
         formData,
         {
           headers: {
@@ -88,20 +89,18 @@ formData.append("source", "user");
       setVideoPreview("");
     } catch (err) {
       console.log(err);
-      alert("Upload Failed!");
+      alert(err.response?.data?.message || "Upload Failed!");
     }
   };
 
   return (
     <div className="upload-page">
       <div className="upload-container">
-
         <h1>🍳 Upload Your Recipe</h1>
 
         <p>Share your delicious recipes with the Chefora community.</p>
 
         <form onSubmit={handleSubmit}>
-
           <div className="form-group">
             <label>🍝 Recipe Title</label>
 
@@ -116,9 +115,7 @@ formData.append("source", "user");
           </div>
 
           <div className="row">
-
             <div className="form-group">
-
               <label>🥗 Category</label>
 
               <select
@@ -135,11 +132,9 @@ formData.append("source", "user");
                 <option>Dessert</option>
                 <option>Drinks</option>
               </select>
-
             </div>
 
             <div className="form-group">
-
               <label>⏱ Cooking Time</label>
 
               <input
@@ -150,13 +145,10 @@ formData.append("source", "user");
                 placeholder="30 mins"
                 required
               />
-
             </div>
-
           </div>
 
           <div className="form-group">
-
             <label>🔥 Difficulty</label>
 
             <select
@@ -170,11 +162,9 @@ formData.append("source", "user");
               <option>Medium</option>
               <option>Hard</option>
             </select>
-
           </div>
 
           <div className="form-group">
-
             <label>🥕 Ingredients</label>
 
             <textarea
@@ -185,11 +175,9 @@ formData.append("source", "user");
               placeholder="Enter ingredients..."
               required
             />
-
           </div>
 
           <div className="form-group">
-
             <label>👩‍🍳 Instructions</label>
 
             <textarea
@@ -200,13 +188,10 @@ formData.append("source", "user");
               placeholder="Write cooking instructions..."
               required
             />
-
           </div>
 
           <div className="row">
-
             <div className="form-group">
-
               <label>📷 Recipe Image</label>
 
               <input
@@ -226,11 +211,9 @@ formData.append("source", "user");
                   }}
                 />
               )}
-
             </div>
 
             <div className="form-group">
-
               <label>🎥 Recipe Video</label>
 
               <input
@@ -251,17 +234,13 @@ formData.append("source", "user");
                   <source src={videoPreview} />
                 </video>
               )}
-
             </div>
-
           </div>
 
-          <button className="upload-btn">
+          <button type="submit" className="upload-btn">
             🚀 Upload Recipe
           </button>
-
         </form>
-
       </div>
     </div>
   );

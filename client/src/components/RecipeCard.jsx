@@ -11,8 +11,8 @@ function RecipeCard({ recipes = [] }) {
   );
 
   return (
-    <section className="recipes">
-      <div className="recipes-container">
+    <section className="recipe-section">
+      <div className="recipe-container">
 
         <div className="recipe-search-box">
           <FaSearch />
@@ -36,32 +36,24 @@ function RecipeCard({ recipes = [] }) {
         </div>
 
         <div className="recipe-grid">
-
           {filteredRecipes.length === 0 ? (
-
             <h3>No Recipes Found 😢</h3>
-
           ) : (
-
             filteredRecipes.map((recipe) => (
-
               <div className="recipe-card" key={recipe._id}>
-
                 <div className="recipe-image">
-
                   <img
                     src={
                       recipe.image
                         ? recipe.image.startsWith("http")
                           ? recipe.image
-                          : `http://localhost:5000${recipe.image}`
+                          : `https://chefora-5n7r.onrender.com${recipe.image}`
                         : "/default-recipe.jpg"
                     }
                     alt={recipe.title}
                   />
 
                   <div className="recipe-overlay">
-
                     <Link
                       to={`/recipe/${recipe._id}`}
                       state={recipe}
@@ -70,21 +62,17 @@ function RecipeCard({ recipes = [] }) {
                         View Recipe
                       </button>
                     </Link>
-
                   </div>
 
                   <div className="favorite">
                     <FaHeart />
                   </div>
-
                 </div>
 
                 <div className="recipe-content">
-
                   <h3>{recipe.title}</h3>
 
                   <div className="recipe-meta">
-
                     <span>
                       <FaStar /> {recipe.rating || "5.0"}
                     </span>
@@ -92,17 +80,11 @@ function RecipeCard({ recipes = [] }) {
                     <span>
                       <FaClock /> {recipe.time}
                     </span>
-
                   </div>
-
                 </div>
-
               </div>
-
             ))
-
           )}
-
         </div>
 
       </div>
