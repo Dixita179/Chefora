@@ -38,9 +38,17 @@ const recipeSchema = new mongoose.Schema(
       required: true,
     },
 
+    // Self-hosted uploaded video (optional now — recipe may use youtubeLink instead)
     video: {
       type: String,
-      required: true,
+      required: false,
+    },
+
+    // Optional YouTube link for the recipe video
+    youtubeLink: {
+      type: String,
+      required: false,
+      trim: true,
     },
 
     // Who uploaded the recipe

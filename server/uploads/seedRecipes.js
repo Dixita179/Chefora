@@ -12,12 +12,9 @@
 
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const path = require("path");
-const Recipe = require("../models/Recipe");
+const Recipe = require("./models/Recipe");
 
-// Explicitly point to the .env file in the server/ root,
-// so this works no matter which folder you run the script from.
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+dotenv.config();
 
 const demoRecipes = [
   {
