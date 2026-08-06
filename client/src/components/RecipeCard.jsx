@@ -1,4 +1,5 @@
 import "./RecipeCard.css";
+import { Link } from "react-router-dom";
 import { FaStar, FaClock, FaHeart, FaSearch } from "react-icons/fa";
 import { useState } from "react";
 
@@ -68,23 +69,26 @@ function RecipeCard({ recipes = [] }) {
 
                 <div className="recipe-overlay">
 
-                  <a
-                    href={recipe.youtubeLink || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => {
-                      if (!recipe.youtubeLink) {
-                        e.preventDefault();
-                        alert("No YouTube video linked for this recipe yet.");
-                      }
-                    }}
-                  >
-
-                    <button className="view-btn">
-                      View Recipe
-                    </button>
-
-                  </a>
+                  {recipe.youtubeLink ? (
+                    // Has a YouTube link -> open it directly in a new tab
+                    <a
+                      href={recipe.youtubeLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button className="view-btn">
+                        View Recipe
+                      </button>
+                    </a>
+                  ) : (
+                    // No YouTube link -> go to internal page, which plays the
+                    // uploaded video (or shows "No video uploaded" if none)
+                    <Link to={`/recipe/${recipe._id}`} state={recipe}>
+                      <button className="view-btn">
+                        View Recipe
+                      </button>
+                    </Link>
+                  )}
 
                 </div>
 
