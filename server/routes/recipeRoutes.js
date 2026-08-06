@@ -22,13 +22,10 @@ router.post(
         instructions: req.body.instructions,
         youtubeLink: req.body.youtubeLink || "",
 
-        image: req.files.image
-          ? "/uploads/images/" + req.files.image[0].filename
-          : "",
+        // Cloudinary returns the full hosted URL in file.path
+        image: req.files.image ? req.files.image[0].path : "",
 
-        video: req.files.video
-          ? "/uploads/videos/" + req.files.video[0].filename
-          : ""
+        video: req.files.video ? req.files.video[0].path : ""
       });
 
       await recipe.save();

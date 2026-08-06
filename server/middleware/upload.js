@@ -1,38 +1,25 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-// Storage configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+// Storage configuration - uploads directly to Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    const isVideo = file.mimetype.startsWith("video");
 
-    if (file.mimetype.startsWith("image")) {
-      cb(null, "uploads/images");
-    }
-
-    else if (file.mimetype.startsWith("video")) {
-      cb(null, "uploads/videos");
-    }
-
-    else {
-      cb(new Error("Only images and videos are allowed"));
-    }
+    return {
+      folder: isVideo ? "chefora/videos" : "chefora/images",
+      resource_type: isVideo ? "video" : "image",
+      // Unique public_id, similar to your old filename logic
+      public_id:
+        Date.now() + "-" + Math.round(Math.random() * 1e9),
+    };
   },
-
-  filename: function (req, file, cb) {
-
-    const uniqueName =
-      Date.now() + "-" + Math.round(Math.random() * 1E9);
-
-    cb(
-      null,
-      uniqueName + path.extname(file.originalname)
-    );
-  }
 });
 
-// File filter
+// File filter - same as before
 const fileFilter = (req, file, cb) => {
-
   if (
     file.mimetype.startsWith("image") ||
     file.mimetype.startsWith("video")
@@ -45,7 +32,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
   storage,
-  fileFilter
+  fileFilter,
 });
 
 module.exports = upload;

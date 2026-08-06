@@ -15,7 +15,6 @@ app.use("/api/auth", authRoutes);
 
 
 // Make uploads folder public
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 mongoose
   .connect(process.env.MONGO_URI)
