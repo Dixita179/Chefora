@@ -2,7 +2,6 @@ import "./RecipeDetails.css";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import SearchBar from "../components/SearchBar";
 import {
   FaClock,
   FaHeart,
@@ -12,7 +11,10 @@ import {
 
 function RecipeDetails() {
   const { id } = useParams();
+
   const [recipe, setRecipe] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchRecipe = async () => {
@@ -23,14 +25,22 @@ function RecipeDetails() {
 
         setRecipe(res.data);
       } catch (err) {
-        console.log(err);
+        console.error(err);
+
+        if (err.response) {
+          setError(err.response.data.message || "Recipe not found.");
+        } else {
+          setError("Unable to connect to the server.");
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRecipe();
   }, [id]);
 
-  if (!recipe) {
+  if (loading) {
     return (
       <div style={{ padding: "120px", textAlign: "center" }}>
         <h2>Loading Recipe...</h2>
@@ -38,10 +48,20 @@ function RecipeDetails() {
     );
   }
 
-  return (
-    <div className="recipe-details">
-      <SearchBar />
+  if (error) {
+    return (
+      <div style={{ padding: "120px", textAlign: "center" }}>
+        <h2>{error}</h2>
 
+        <Link to="/recipes" className="back-btn">
+          <FaArrowLeft /> Back to Recipes
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="recipe-details-page">
       <Link to="/recipes" className="back-btn">
         <FaArrowLeft /> Back to Recipes
       </Link>
@@ -60,7 +80,7 @@ function RecipeDetails() {
         <h1>{recipe.title}</h1>
 
         <p className="chef-name">
-          By Chefora Kitchen
+          By {recipe.author || "Chefora Kitchen"}
         </p>
 
         <div className="recipe-meta">
@@ -68,9 +88,7 @@ function RecipeDetails() {
             <FaClock /> {recipe.time}
           </span>
 
-          <span>
-            ⭐ {recipe.rating || "5.0"}
-          </span>
+          <span>⭐ {recipe.rating || "5.0"}</span>
 
           <button className="fav-btn">
             <FaHeart /> Favorite
@@ -87,11 +105,7 @@ function RecipeDetails() {
         </h2>
 
         {recipe.video ? (
-          <video
-            controls
-            width="100%"
-            className="recipe-video"
-          >
+          <video controls width="100%" className="recipe-video">
             <source
               src={`https://chefora-5n7r.onrender.com${recipe.video}`}
               type="video/mp4"
