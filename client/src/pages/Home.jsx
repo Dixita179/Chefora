@@ -11,15 +11,7 @@ import Footer from "../components/Footer";
 import AuthPopup from "../components/AuthPopup";
 import FeaturedVideo from "./FeaturedVideo"; // adjust path
 
-   function Home() {
-     return (
-       <>
-         <Hero />
-         <FeaturedVideo />
-         {/* rest of your page, like RecipeCard list */}
-       </>
-     );
-   }
+  
 function Home() {
 
   const [recipes, setRecipes] = useState([]);
@@ -62,7 +54,7 @@ function Home() {
       <AuthPopup delay={5000} />
 
       <Hero />
-
+<FeaturedVideo />
       <SearchBar
         value={searchTerm}
         onSearch={setSearchTerm}

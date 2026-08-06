@@ -20,6 +20,7 @@ router.post(
         difficulty: req.body.difficulty,
         ingredients: req.body.ingredients,
         instructions: req.body.instructions,
+        youtubeLink: req.body.youtubeLink || "",
 
         image: req.files.image
           ? "/uploads/images/" + req.files.image[0].filename
@@ -82,6 +83,46 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// Update recipe (e.g. add/change youtubeLink)
+router.patch("/:id", async (req, res) => {
+  try {
+    const allowedFields = [
+      "title",
+      "category",
+      "time",
+      "difficulty",
+      "ingredients",
+      "instructions",
+      "youtubeLink",
+    ];
+
+    const updates = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    const recipe = await Recipe.findByIdAndUpdate(
+      req.params.id,
+      updates,
+      { new: true, runValidators: true }
+    );
+
+    if (!recipe) {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    res.json({ message: "Recipe updated", recipe });
+  } catch (err) {
+    if (err.name === "CastError") {
+      return res.status(404).json({ message: "Recipe not found" });
+    }
+
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get recipe by ID
 router.get("/:id", async (req, res) => {
   try {
@@ -96,6 +137,13 @@ router.get("/:id", async (req, res) => {
     res.json(recipe);
 
   } catch (err) {
+    // Handle invalid ObjectId format gracefully instead of a raw 500
+    if (err.name === "CastError") {
+      return res.status(404).json({
+        message: "Recipe not found"
+      });
+    }
+
     res.status(500).json({
       error: err.message
     });
