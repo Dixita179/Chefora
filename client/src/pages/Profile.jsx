@@ -1,38 +1,53 @@
 import "./Profile.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { FaUtensils, FaHeart, FaVideo, FaEdit, FaTimes, FaCamera } from "react-icons/fa";
 
-function Profile() {
-  const recipes = [
-    {
-      id: 1,
-      title: "Creamy Garlic Pasta",
-      image:
-        "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600",
-    },
-    {
-      id: 2,
-      title: "Butter Chicken",
-      image:
-        "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600",
-    },
-    {
-      id: 3,
-      title: "Chocolate Cake",
-      image:
-        "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
-    },
-  ];
+const API_BASE = "https://chefora-5n7r.onrender.com";
 
-  const [profile, setProfile] = useState({
-    name: "Dikshita Nath",
-    bio: "🍳 Passionate home chef • Food Blogger • Love experimenting with new recipes ❤️",
-    pic: "https://i.pravatar.cc/250?img=47",
-  });
+function Profile() {
+  const [profile, setProfile] = useState(null);
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(profile);
+  const [formData, setFormData] = useState(null);
   const [picFile, setPicFile] = useState(null); // actual File object, for backend upload later
+
+  // Fetch the CURRENT logged-in user's profile + their own recipes on mount
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      setLoading(true);
+      setLoadError(null);
+
+      try {
+        const token = localStorage.getItem("token"); // adjust key if your auth stores it differently
+
+        const profileRes = await axios.get(`${API_BASE}/api/users/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setProfile(profileRes.data);
+
+        // If you have a dedicated "my recipes" endpoint, use that instead:
+        // const recipesRes = await axios.get(`${API_BASE}/api/recipes/mine`, { headers: {...} });
+        // For now, fetching all recipes and filtering by the logged-in user's id:
+        const recipesRes = await axios.get(`${API_BASE}/api/recipes`);
+        const mine = recipesRes.data.filter(
+          (r) => r.userId === profileRes.data._id || r.author === profileRes.data._id
+        );
+        setRecipes(mine);
+      } catch (err) {
+        console.error("Failed to load profile:", err);
+        setLoadError("Couldn't load your profile. Please log in again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []); // runs once when the component mounts (i.e. whenever someone lands on their profile)
 
   const openEdit = () => {
     setFormData(profile);
@@ -60,21 +75,30 @@ function Profile() {
   const handleSave = async (e) => {
     e.preventDefault();
 
-    // TODO: replace with your real backend call. Example with file upload:
-    //
-    // const data = new FormData();
-    // data.append("name", formData.name);
-    // data.append("bio", formData.bio);
-    // if (picFile) data.append("profilePic", picFile);
-    //
-    // const res = await axios.put("http://localhost:5000/api/users/me", data, {
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // });
-    // setProfile(res.data);
+    try {
+      const token = localStorage.getItem("token");
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("bio", formData.bio);
+      if (picFile) data.append("profilePic", picFile);
 
-    setProfile(formData);
-    setIsEditing(false);
+      const res = await axios.put(`${API_BASE}/api/users/me`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setProfile(res.data); // update with what the SERVER actually saved, not just local state
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Failed to save profile:", err);
+    }
   };
+
+  if (loading) return <div className="profile-page">Loading profile...</div>;
+  if (loadError) return <div className="profile-page">{loadError}</div>;
+  if (!profile) return <div className="profile-page">No profile found.</div>;
 
   return (
     <div className="profile-page">
@@ -103,19 +127,19 @@ function Profile() {
 
         <div className="stat-card">
           <FaUtensils />
-          <h2>25</h2>
+          <h2>{recipes.length}</h2>
           <p>Recipes</p>
         </div>
 
         <div className="stat-card">
           <FaHeart />
-          <h2>182</h2>
+          <h2>{profile.favoritesCount ?? 0}</h2>
           <p>Favorites</p>
         </div>
 
         <div className="stat-card">
           <FaVideo />
-          <h2>14</h2>
+          <h2>{profile.videosCount ?? 0}</h2>
           <p>Videos</p>
         </div>
 
@@ -127,8 +151,10 @@ function Profile() {
 
         <div className="recipe-grid">
 
+          {recipes.length === 0 && <p>No recipes uploaded yet.</p>}
+
           {recipes.map((recipe) => (
-            <div className="recipe-card" key={recipe.id}>
+            <div className="recipe-card" key={recipe._id || recipe.id}>
 
               <img
                 src={recipe.image}

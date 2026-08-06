@@ -3,9 +3,15 @@
 =========================== */
 
 .footer {
-  background: #111;
+  --footer-accent: #B11226;
+  --footer-accent-soft: rgba(177, 18, 38, 0.35);
+  --footer-bg: #111;
+  --footer-text-muted: #999;
+  --footer-text-body: #bbb;
+
+  background: var(--footer-bg);
   color: #fff;
-  padding: 70px 8% 20px;
+  padding: 80px 8% 24px;
 }
 
 .footer-container {
@@ -15,19 +21,21 @@
 }
 
 .footer-logo h2 {
-  font-size: 32px;
-  margin-bottom: 15px;
+  font-size: 34px;
+  margin-bottom: 16px;
   font-family: "Playfair Display", serif;
+  letter-spacing: 0.3px;
 }
 
 .footer-logo span {
-  color: #B11226;
+  color: var(--footer-accent);
 }
 
 .footer-logo p {
-  color: #bbb;
+  color: var(--footer-text-body);
   line-height: 1.8;
-  margin-bottom: 25px;
+  margin-bottom: 28px;
+  max-width: 34ch;
 }
 
 /* ===========================
@@ -36,7 +44,7 @@
 
 .social-icons {
   display: flex;
-  gap: 15px;
+  gap: 14px;
 }
 
 .social-icons a {
@@ -48,14 +56,21 @@
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 18px;
-  transition: 0.3s;
+  font-size: 17px;
   text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.social-icons a:hover {
-  background: #B11226;
-  transform: translateY(-6px);
+.social-icons a:hover,
+.social-icons a:focus-visible {
+  background: var(--footer-accent);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px var(--footer-accent-soft);
+}
+
+.social-icons a:focus-visible {
+  outline: 2px solid var(--footer-accent);
+  outline-offset: 3px;
 }
 
 /* ===========================
@@ -64,9 +79,11 @@
 
 .footer-links h3,
 .footer-contact h3 {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
   color: white;
-  font-size: 22px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 .footer-links ul {
@@ -74,18 +91,26 @@
 }
 
 .footer-links ul li {
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
 
 .footer-links ul li a {
-  color: #bbb;
+  position: relative;
+  color: var(--footer-text-body);
   text-decoration: none;
-  transition: .3s;
+  transition: color 0.25s ease, padding-left 0.25s ease;
 }
 
-.footer-links ul li a:hover {
-  color: #B11226;
-  padding-left: 6px;
+.footer-links ul li a:hover,
+.footer-links ul li a:focus-visible {
+  color: var(--footer-accent);
+  padding-left: 8px;
+}
+
+.footer-links ul li a:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* ===========================
@@ -93,14 +118,18 @@
 =========================== */
 
 .footer-contact p {
-  margin-bottom: 15px;
-  color: #bbb;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: var(--footer-text-body);
   line-height: 1.6;
 }
 
-.footer-contact i {
-  color: #B11226;
-  margin-right: 10px;
+.footer-contact svg {
+  color: var(--footer-accent);
+  margin-top: 3px;
+  flex-shrink: 0;
 }
 
 /* ===========================
@@ -108,19 +137,20 @@
 =========================== */
 
 .footer-bottom {
-  margin-top: 50px;
-  padding-top: 20px;
+  margin-top: 55px;
+  padding-top: 22px;
   border-top: 1px solid #2c2c2c;
   text-align: center;
 }
 
 .footer-bottom p {
-  color: #999;
-  font-size: 15px;
+  color: var(--footer-text-muted);
+  font-size: 14px;
+  letter-spacing: 0.2px;
 }
 
 .footer-bottom span {
-  color: #B11226;
+  color: var(--footer-accent);
   font-weight: 600;
 }
 
@@ -140,15 +170,25 @@
 @media (max-width: 768px) {
 
   .footer {
-    padding: 60px 25px 20px;
+    padding: 60px 25px 24px;
   }
 
   .footer-container {
     grid-template-columns: 1fr;
+    gap: 36px;
     text-align: center;
   }
 
+  .footer-logo p {
+    max-width: none;
+    margin-inline: auto;
+  }
+
   .social-icons {
+    justify-content: center;
+  }
+
+  .footer-contact p {
     justify-content: center;
   }
 
@@ -162,13 +202,13 @@
 
   .footer-links h3,
   .footer-contact h3 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .social-icons a {
     width: 40px;
     height: 40px;
-    font-size: 16px;
+    font-size: 15px;
   }
 
 }

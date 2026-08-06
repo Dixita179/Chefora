@@ -11,7 +11,7 @@ import UploadRecipe from "./pages/UploadRecipe";
 import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
 import NotFound from "./pages/NotFound";
-
+import CategoryPage from "./components/CatagoryPage";
 function App() {
   return (
     <>
@@ -27,6 +27,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
+        
+
+<Route path="/category/:categoryName" element={<CategoryPage />} />
       </Routes>
     </>
   );

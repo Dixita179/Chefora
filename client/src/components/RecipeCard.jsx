@@ -4,16 +4,23 @@ import { FaStar, FaClock, FaHeart, FaSearch } from "react-icons/fa";
 import { useState } from "react";
 
 function RecipeCard({ recipes = [] }) {
-
   const [searchTerm, setSearchTerm] = useState("");
+  const [favorites, setFavorites] = useState([]);
 
   const filteredRecipes = recipes.filter((recipe) =>
     recipe.title?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
-    <section className="recipes-section">
+  const toggleFavorite = (id) => {
+    if (favorites.includes(id)) {
+      setFavorites(favorites.filter((item) => item !== id));
+    } else {
+      setFavorites([...favorites, id]);
+    }
+  };
 
+  return (
+    <>
       <div className="recipe-search-box">
         <FaSearch />
 
@@ -25,9 +32,7 @@ function RecipeCard({ recipes = [] }) {
         />
       </div>
 
-
       <div className="section-heading">
-
         <span>TRENDING RECIPES</span>
 
         <h2>Discover Popular Recipes</h2>
@@ -36,25 +41,15 @@ function RecipeCard({ recipes = [] }) {
           Explore delicious recipes loved by thousands of food lovers around
           the world.
         </p>
-
       </div>
 
-
       <div className="recipe-grid">
-
         {filteredRecipes.length === 0 ? (
-
           <h3>No Recipes Found 😢</h3>
-
         ) : (
-
           filteredRecipes.map((recipe) => (
-
             <div className="recipe-card" key={recipe._id}>
-
-
               <div className="recipe-image">
-
                 <img
                   src={
                     recipe.image
@@ -66,11 +61,8 @@ function RecipeCard({ recipes = [] }) {
                   alt={recipe.title}
                 />
 
-
                 <div className="recipe-overlay">
-
                   {recipe.youtubeLink ? (
-                    // Has a YouTube link -> open it directly in a new tab
                     <a
                       href={recipe.youtubeLink}
                       target="_blank"
@@ -81,60 +73,46 @@ function RecipeCard({ recipes = [] }) {
                       </button>
                     </a>
                   ) : (
-                    // No YouTube link -> go to internal page, which plays the
-                    // uploaded video (or shows "No video uploaded" if none)
-                    <Link to={`/recipe/${recipe._id}`} state={recipe}>
+                    <Link
+                      to={`/recipe/${recipe._id}`}
+                      state={recipe}
+                    >
                       <button className="view-btn">
                         View Recipe
                       </button>
                     </Link>
                   )}
-
                 </div>
 
-
-                <div className="favorite">
+                <div
+                  className={`favorite ${
+                    favorites.includes(recipe._id) ? "active" : ""
+                  }`}
+                  onClick={() => toggleFavorite(recipe._id)}
+                >
                   <FaHeart />
                 </div>
-
-
               </div>
 
-
               <div className="recipe-content">
-
                 <h3>{recipe.title}</h3>
 
-
                 <div className="recipe-meta">
-
                   <span>
                     <FaStar /> {recipe.rating || "5.0"}
                   </span>
 
-
                   <span>
                     <FaClock /> {recipe.time}
                   </span>
-
-
                 </div>
-
               </div>
-
-
             </div>
-
           ))
-
         )}
-
       </div>
-
-
-    </section>
+    </>
   );
 }
-
 
 export default RecipeCard;

@@ -1,49 +1,45 @@
+import "./Newsletter.css";
 import { FaPaperPlane } from "react-icons/fa";
 
 function Newsletter() {
   return (
-    <section className="bg-[#FFF8F3] py-20 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section className="newsletter-section">
+      <div className="newsletter-wrapper">
 
-        <div className="bg-gradient-to-r from-orange-500 to-orange-400 rounded-[30px] p-10 md:p-16 text-white shadow-2xl">
+        <div className="newsletter-card">
 
-          <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div className="newsletter-grid">
 
-          
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+              <h2 className="newsletter-heading">
                 Never Miss a Recipe!
               </h2>
 
-              <p className="mt-5 text-orange-100 text-lg leading-8">
+              <p className="newsletter-subtext">
                 Subscribe to our newsletter and receive delicious recipes,
                 cooking tips, and food inspiration delivered straight to your
                 inbox every week.
               </p>
             </div>
 
-          
             <div>
 
-              <div className="bg-white rounded-full p-2 flex items-center shadow-lg">
+              <form className="newsletter-input-wrap" onSubmit={(e) => e.preventDefault()}>
 
                 <input
                   type="email"
                   placeholder="Enter your email..."
-                  className="flex-1 px-6 py-4 rounded-full outline-none text-gray-700"
+                  required
                 />
 
-                <button className="bg-orange-500 hover:bg-orange-600 transition-all duration-300 text-white px-7 py-4 rounded-full flex items-center gap-2 font-semibold">
-
+                <button type="submit">
                   Subscribe
-
                   <FaPaperPlane />
-
                 </button>
 
-              </div>
+              </form>
 
-              <p className="text-sm text-orange-100 mt-4">
+              <p className="newsletter-disclaimer">
                 📧 No spam. Only delicious recipes and cooking inspiration.
               </p>
 

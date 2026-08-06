@@ -1,4 +1,5 @@
 import "./CategoryCard.css";
+import { Link } from "react-router-dom";
 
 const categories = [
   "Breakfast",
@@ -22,12 +23,13 @@ function CategoryCard() {
         <div className="categories-grid">
 
           {categories.map((category) => (
-            <div
+            <Link
               key={category}
+              to={`/category/${category.toLowerCase()}`}
               className="category-box"
             >
               <h3>{category}</h3>
-            </div>
+            </Link>
           ))}
 
         </div>

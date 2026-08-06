@@ -1,0 +1,76 @@
+import "./CatagoryPage.css";
+import { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+
+function CategoryPage() {
+  const { categoryName } = useParams(); // reads "breakfast", "lunch", etc. from the URL
+
+  const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchByCategory = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/recipes?category=${categoryName}`
+        );
+
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+
+        const data = await res.json();
+        setRecipes(data);
+      } catch (err) {
+        console.error("Failed to load category recipes:", err);
+        setError("Couldn't load recipes for this category.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchByCategory();
+  }, [categoryName]); // re-fetch whenever the URL category changes
+
+  const displayName =
+    categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+
+  return (
+    <section className="category-page">
+
+      <div className="category-page-header">
+        <Link to="/" className="back-link">← Back to Categories</Link>
+        <h1>{displayName} Recipes</h1>
+      </div>
+
+      {loading && <p className="category-status">Loading recipes...</p>}
+
+      {error && <p className="category-status error">{error}</p>}
+
+      {!loading && !error && recipes.length === 0 && (
+        <p className="category-status">
+          No {displayName.toLowerCase()} recipes yet — check back soon!
+        </p>
+      )}
+
+      <div className="category-recipe-grid">
+        {recipes.map((recipe) => (
+          <div className="category-recipe-card" key={recipe.id}>
+            <img src={recipe.image} alt={recipe.title} />
+            <div className="category-recipe-info">
+              <h3>{recipe.title}</h3>
+              <button>View Recipe</button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </section>
+  );
+}
+
+export default CategoryPage;

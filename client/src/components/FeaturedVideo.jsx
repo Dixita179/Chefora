@@ -1,66 +1,73 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { FaPlayCircle } from "react-icons/fa";
 import "./FeaturedVideo.css";
 
+// Free-license stock clip (Mixkit) — swap this for your own hosted video anytime.
+const VIDEO_SRC = "https://assets.mixkit.co/videos/47555/47555-720.mp4";
+const VIDEO_POSTER =
+  "https://assets.mixkit.co/videos/47555/47555-thumb-360-0.jpg";
+
 function FeaturedVideo() {
-  const [recipe, setRecipe] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const videoRef = useRef(null);
+  const sectionRef = useRef(null);
+  const [hasPlayed, setHasPlayed] = useState(false);
 
   useEffect(() => {
-    const fetchFeatured = async () => {
-      try {
-        const res = await axios.get(
-          "https://chefora-5n7r.onrender.com/api/recipes"
-        );
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
 
-        // pick the first recipe that actually has a video
-        const withVideo = res.data.find((r) => r.video);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {
+            // autoplay can be blocked by the browser — that's fine,
+            // the native controls still let the user press play manually
+          });
+          setHasPlayed(true);
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.5 } // fires once half the section is visible
+    );
 
-        setRecipe(withVideo || null);
-      } catch (err) {
-        console.error("Failed to load featured video:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFeatured();
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
-  if (loading) return null; // don't show anything while loading
-  if (!recipe) return null; // no recipe with a video yet, section just won't render
-
   return (
-    <section id="recipes-section" className="featured-video-section">
-      <div className="section-heading">
-        <span>FEATURED VIDEO</span>
-        <h2>
-          <FaPlayCircle /> Watch: {recipe.title}
-        </h2>
-      </div>
+    <section ref={sectionRef} id="featured-video" className="featured-video-section">
+      <div className="featured-video-inner">
 
-      <div className="featured-video-wrapper">
-        <video
-          controls
-          className="featured-video-player"
-          poster={
-            recipe.image
-              ? `https://chefora-5n7r.onrender.com${recipe.image}`
-              : undefined
-          }
-        >
-          <source
-            src={`https://chefora-5n7r.onrender.com${recipe.video}`}
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
-        </video>
+        <div className="featured-video-media">
+          <video
+            ref={videoRef}
+            className="featured-video-player"
+            poster={VIDEO_POSTER}
+            muted
+            loop
+            playsInline
+            controls
+          >
+            <source src={VIDEO_SRC} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
-        <Link to={`/recipe/${recipe._id}`} className="view-full-recipe-link">
-          View Full Recipe →
-        </Link>
+        <div className="featured-video-content">
+          <h2>Watch a Chef in Action</h2>
+          <p>
+            There's nothing like watching a technique come together in real
+            time. From knife work to plating, this is the kind of hands-on
+            cooking that inspires our recipe collection — the same energy
+            you'll find in every dish on Chefora.
+          </p>
+          <Link to="/recipes" className="view-full-recipe-link">
+            Browse Recipes →
+          </Link>
+        </div>
+
       </div>
     </section>
   );
