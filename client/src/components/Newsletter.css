@@ -149,5 +149,29 @@
     grid-template-columns: 1fr 1fr;
     gap: 40px;
   }
+  .newsletter-success{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:16px;
+    font-weight:600;
+    color:#fbf3f4;
+    background:rgba(177,18,38,.08);
+    border:1px solid rgba(177,18,38,.25);
+    border-radius:8px;
+    padding:14px 18px;
+    animation:newsletter-pop .3s ease both;
+}
+
+@keyframes newsletter-pop{
+    from{
+        opacity:0;
+        transform:translateY(6px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 
 }

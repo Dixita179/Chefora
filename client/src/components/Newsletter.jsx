@@ -1,7 +1,19 @@
 import "./Newsletter.css";
-import { FaPaperPlane } from "react-icons/fa";
+import { useState } from "react";
+import { FaPaperPlane, FaCheckCircle } from "react-icons/fa";
 
 function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // No backend call yet — just confirm the subscription locally.
+    setSubscribed(true);
+    setEmail("");
+  };
+
   return (
     <section className="newsletter-section">
       <div className="newsletter-wrapper">
@@ -24,20 +36,28 @@ function Newsletter() {
 
             <div>
 
-              <form className="newsletter-input-wrap" onSubmit={(e) => e.preventDefault()}>
+              {subscribed ? (
+                <p className="newsletter-success">
+                  <FaCheckCircle /> Thanks for subscribing!
+                </p>
+              ) : (
+                <form className="newsletter-input-wrap" onSubmit={handleSubmit}>
 
-                <input
-                  type="email"
-                  placeholder="Enter your email..."
-                  required
-                />
+                  <input
+                    type="email"
+                    placeholder="Enter your email..."
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
 
-                <button type="submit">
-                  Subscribe
-                  <FaPaperPlane />
-                </button>
+                  <button type="submit">
+                    Subscribe
+                    <FaPaperPlane />
+                  </button>
 
-              </form>
+                </form>
+              )}
 
               <p className="newsletter-disclaimer">
                 📧 No spam. Only delicious recipes and cooking inspiration.

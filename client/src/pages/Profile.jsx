@@ -32,10 +32,16 @@ function Profile() {
 
         // If you have a dedicated "my recipes" endpoint, use that instead:
         // const recipesRes = await axios.get(`${API_BASE}/api/recipes/mine`, { headers: {...} });
-        // For now, fetching all recipes and filtering by the logged-in user's id:
+        // For now, fetching all recipes and filtering by the logged-in user.
+        // NOTE: UploadRecipe.jsx currently saves `author` as the username string
+        // (not the user's _id), so we have to match on username here too —
+        // matching only on _id was silently excluding every recipe you own.
         const recipesRes = await axios.get(`${API_BASE}/api/recipes`);
         const mine = recipesRes.data.filter(
-          (r) => r.userId === profileRes.data._id || r.author === profileRes.data._id
+          (r) =>
+            r.userId === profileRes.data._id ||
+            r.author === profileRes.data._id ||
+            r.author === profileRes.data.username
         );
         setRecipes(mine);
       } catch (err) {
@@ -100,6 +106,10 @@ function Profile() {
   if (loadError) return <div className="profile-page">{loadError}</div>;
   if (!profile) return <div className="profile-page">No profile found.</div>;
 
+  // Derived from the recipes we actually loaded, instead of trusting a
+  // separate `profile.videosCount` field that the backend never updates.
+  const videoCount = recipes.filter((r) => r.video).length;
+
   return (
     <div className="profile-page">
 
@@ -139,7 +149,7 @@ function Profile() {
 
         <div className="stat-card">
           <FaVideo />
-          <h2>{profile.videosCount ?? 0}</h2>
+          <h2>{videoCount}</h2>
           <p>Videos</p>
         </div>
 
