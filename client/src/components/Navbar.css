@@ -123,10 +123,19 @@
 
 .menu-icon{
     display:none;
+    position:relative;
     color:white;
     font-size:26px;
     cursor:pointer;
-    z-index:1001;
+    z-index:2;
+}
+
+.mobile-auth{
+    display:none;
+}
+
+.drawer-close-row{
+    display:none;
 }
 
 /* Mobile */
@@ -149,6 +158,7 @@
     padding:100px 32px 40px;
     transition:left .35s ease;
     overflow-y:auto;
+    z-index:1;
 }
 
 .nav-links.active{
@@ -170,6 +180,25 @@
     display:block;
 }
 
+.drawer-close-row{
+    display:flex;
+    justify-content:flex-end;
+    width:100%;
+    border-bottom:none !important;
+    position:absolute;
+    top:24px;
+    right:32px;
+}
+
+.drawer-close-btn{
+    background:none;
+    border:none;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+    padding:6px;
+}
+
 /* Login/register move inside the mobile drawer instead of disappearing */
 
 .nav-right .login,
@@ -183,6 +212,7 @@
     gap:14px;
     width:100%;
     margin-top:28px;
+    border-bottom:none;
 }
 
 .nav-links .mobile-auth .login,
