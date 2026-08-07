@@ -1,53 +1,163 @@
+/* ===========================
+   OVERLAY
+=========================== */
+
 .auth-popup-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(17, 17, 17, 0.55);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: auth-fade-in 0.25s ease;
 }
 
-.auth-popup {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  max-width: 360px;
-  width: 90%;
-  position: relative;
-  text-align: center;
+@keyframes auth-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
+
+/* ===========================
+   POPUP CARD
+=========================== */
+
+.auth-popup {
+  --auth-accent: #B11226;
+  --auth-accent-dark: #8f0e1e;
+
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 100%;
+  padding: 40px 32px 32px;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+  animation: auth-pop-in 0.3s ease;
+  box-sizing: border-box;
+}
+
+@keyframes auth-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-popup::before {
+  content: "🍴";
+  display: block;
+  font-size: 30px;
+  margin-bottom: 14px;
+}
+
+/* ===========================
+   CLOSE BUTTON
+=========================== */
 
 .auth-popup-close {
   position: absolute;
-  top: 10px;
+  top: 14px;
   right: 14px;
-  background: none;
+  width: 30px;
+  height: 30px;
   border: none;
-  font-size: 1.4rem;
+  background: #f4f0eb;
+  color: #6b7280;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 1;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+.auth-popup-close:hover {
+  background: var(--auth-accent);
+  color: #fff;
+}
+
+/* ===========================
+   TEXT
+=========================== */
+
+.auth-popup h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 24px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.auth-popup p {
+  color: #6b7280;
+  font-size: 14.5px;
+  line-height: 1.6;
+  margin-bottom: 26px;
+}
+
+/* ===========================
+   ACTIONS
+=========================== */
 
 .auth-popup-actions {
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1.5rem;
+  gap: 12px;
 }
 
 .auth-popup-btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  text-decoration: none;
+  flex: 1;
+  padding: 13px 0;
+  border-radius: 999px;
+  font-size: 14.5px;
   font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
 }
 
 .auth-popup-btn.login {
-  background: #f0f0f0;
-  color: #333;
+  background: var(--auth-accent);
+  color: #fff;
+}
+
+.auth-popup-btn.login:hover {
+  background: var(--auth-accent-dark);
 }
 
 .auth-popup-btn.register {
-  background: #ff6b35; /* swap for your brand color */
-  color: #fff;
+  background: #fff;
+  color: var(--auth-accent);
+  border: 1.5px solid var(--auth-accent);
+}
+
+.auth-popup-btn.register:hover {
+  background: #fdf1f2;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 420px) {
+
+  .auth-popup {
+    padding: 32px 24px 26px;
+  }
+
+  .auth-popup-actions {
+    flex-direction: column;
+  }
+
 }

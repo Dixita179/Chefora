@@ -1,6 +1,9 @@
-import "./CatagoryPage.css";
+import "./CategoryPage.css";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+
+const API_BASE = "https://chefora-5n7r.onrender.com";
 
 function CategoryPage() {
   const { categoryName } = useParams(); // reads "breakfast", "lunch", etc. from the URL
@@ -15,16 +18,15 @@ function CategoryPage() {
       setError(null);
 
       try {
-        const res = await fetch(
-          `http://localhost:5000/api/recipes?category=${categoryName}`
+        // Backend has no category filter route yet, so fetch everything
+        // and filter here instead.
+        const res = await axios.get(`${API_BASE}/api/recipes`);
+
+        const filtered = res.data.filter(
+          (r) => r.category?.toLowerCase() === categoryName.toLowerCase()
         );
 
-        if (!res.ok) {
-          throw new Error(`Server responded with ${res.status}`);
-        }
-
-        const data = await res.json();
-        setRecipes(data);
+        setRecipes(filtered);
       } catch (err) {
         console.error("Failed to load category recipes:", err);
         setError("Couldn't load recipes for this category.");
@@ -59,11 +61,22 @@ function CategoryPage() {
 
       <div className="category-recipe-grid">
         {recipes.map((recipe) => (
-          <div className="category-recipe-card" key={recipe.id}>
-            <img src={recipe.image} alt={recipe.title} />
+          <div className="category-recipe-card" key={recipe._id}>
+            <img
+              src={
+                recipe.image
+                  ? recipe.image.startsWith("http")
+                    ? recipe.image
+                    : `${API_BASE}${recipe.image}`
+                  : "/default-recipe.jpg"
+              }
+              alt={recipe.title}
+            />
             <div className="category-recipe-info">
               <h3>{recipe.title}</h3>
-              <button>View Recipe</button>
+              <Link to={`/recipe/${recipe._id}`}>
+                <button>View Recipe</button>
+              </Link>
             </div>
           </div>
         ))}

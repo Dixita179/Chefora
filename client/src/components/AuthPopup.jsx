@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./AuthPopup.css";
 
 function AuthPopup({ delay = 5000 }) {
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Skip if user already dismissed it this session, or is logged in
@@ -21,6 +22,12 @@ function AuthPopup({ delay = 5000 }) {
     sessionStorage.setItem("authPopupDismissed", "true");
   };
 
+  const goTo = (path) => {
+    sessionStorage.setItem("authPopupDismissed", "true");
+    setShow(false);
+    navigate(path); // programmatic navigation — not dependent on Link's click timing
+  };
+
   if (!show) return null;
 
   return (
@@ -34,12 +41,12 @@ function AuthPopup({ delay = 5000 }) {
         <p>Log in or create an account to save your favorite recipes.</p>
 
         <div className="auth-popup-actions">
-          <Link to="/login" className="auth-popup-btn login" onClick={handleClose}>
+          <button className="auth-popup-btn login" onClick={() => goTo("/login")}>
             Login
-          </Link>
-          <Link to="/register" className="auth-popup-btn register" onClick={handleClose}>
+          </button>
+          <button className="auth-popup-btn register" onClick={() => goTo("/register")}>
             Register
-          </Link>
+          </button>
         </div>
       </div>
     </div>
