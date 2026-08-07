@@ -126,6 +126,7 @@
     color:white;
     font-size:26px;
     cursor:pointer;
+    z-index:1001;
 }
 
 /* Mobile */
@@ -134,27 +135,75 @@
 
 .nav-links{
     position:fixed;
-    top:80px;
+    top:0;
     left:-100%;
-    width:100%;
-    background:#111;
+    width:75%;
+    max-width:320px;
+    height:100vh;
+    background:#141414;
+    box-shadow:-4px 0 24px rgba(0,0,0,.4);
     flex-direction:column;
-    gap:30px;
-    padding:40px 0;
-    transition:.4s;
+    align-items:flex-start;
+    justify-content:flex-start;
+    gap:0;
+    padding:100px 32px 40px;
+    transition:left .35s ease;
+    overflow-y:auto;
 }
 
 .nav-links.active{
     left:0;
 }
 
+.nav-links li{
+    width:100%;
+    border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.nav-links li a{
+    display:block;
+    padding:18px 0;
+    font-size:18px;
+}
+
 .menu-icon{
     display:block;
 }
 
-.login,
-.register{
+/* Login/register move inside the mobile drawer instead of disappearing */
+
+.nav-right .login,
+.nav-right .register{
     display:none;
+}
+
+.nav-links .mobile-auth{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    width:100%;
+    margin-top:28px;
+}
+
+.nav-links .mobile-auth .login,
+.nav-links .mobile-auth .register{
+    display:block;
+    text-align:center;
+    width:100%;
+}
+
+/* Dim the page behind the open drawer */
+
+.nav-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:999;
+}
+
+.nav-overlay.active{
+    display:block;
 }
 
 }
