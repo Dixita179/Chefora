@@ -14,6 +14,8 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 
+const API_BASE = "https://chefora-5n7r.onrender.com";
+
 // Extracts a playable embed URL from common YouTube link formats
 function getYoutubeEmbedUrl(url) {
   if (!url) return null;
@@ -104,6 +106,57 @@ function RecipeDetails() {
     fetchRecipe();
   }, [id]);
 
+  // Check whether the logged-in user already has this recipe favorited
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return; // not logged in — leave heart empty
+
+      try {
+        const res = await axios.get(`${API_BASE}/api/users/me/favorites`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const isFavorited = res.data.some((r) => r._id === id);
+        setFavorited(isFavorited);
+      } catch (err) {
+        console.error("Failed to check favorite status:", err);
+      }
+    };
+
+    checkFavoriteStatus();
+  }, [id]);
+
+  const toggleFavorite = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please log in to save favorites.");
+      return;
+    }
+
+    const wasFavorited = favorited;
+
+    // Optimistic UI — flip immediately, revert only if the request fails
+    setFavorited(!wasFavorited);
+
+    try {
+      if (wasFavorited) {
+        await axios.delete(`${API_BASE}/api/users/me/favorites/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } else {
+        await axios.post(
+          `${API_BASE}/api/users/me/favorites/${id}`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      }
+    } catch (err) {
+      console.error("Failed to update favorite:", err);
+      setFavorited(wasFavorited); // revert
+    }
+  };
+
   const toggleChecked = (idx) => {
     setCheckedItems((prev) => ({ ...prev, [idx]: !prev[idx] }));
   };
@@ -155,7 +208,7 @@ function RecipeDetails() {
 
         <button
           className="rd-pill rd-fav-pill"
-          onClick={() => setFavorited((f) => !f)}
+          onClick={toggleFavorite}
           aria-label="Toggle favorite"
         >
           {favorited ? <FaHeart /> : <FaRegHeart />}

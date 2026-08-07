@@ -45,7 +45,7 @@ function Hero() {
               className="secondary-btn"
               onClick={() => {
                 document
-                  .getElementById("recipes-section")
+                  .getElementById("featured-video")
                   ?.scrollIntoView({ behavior: "smooth" });
               }}
             >
