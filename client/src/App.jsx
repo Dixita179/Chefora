@@ -11,7 +11,7 @@ import UploadRecipe from "./pages/UploadRecipe";
 import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
 import NotFound from "./pages/NotFound";
-import CategoryPage from "./components/CatagoryPage";
+import CategoryPage from "./components/CategoryPage";
 function App() {
   return (
     <>
