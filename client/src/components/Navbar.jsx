@@ -1,13 +1,15 @@
 import "./Navbar.css";
-import { Link, useLocation } from "react-router-dom";
-import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import logo from "../assets/images/logo.png";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scroll, setScroll] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const changeNavbar = () => {
@@ -24,7 +26,21 @@ function Navbar() {
     setMenuOpen(false);
   }, [location.pathname]);
 
+  // Check login state on mount, and again whenever the route changes
+  // (so logging in/out on another page updates the navbar right away)
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("user"));
+  }, [location.pathname]);
+
   const closeMenu = () => setMenuOpen(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    closeMenu();
+    navigate("/");
+  };
 
   return (
     <nav className={scroll ? "navbar active" : "navbar"}>
@@ -75,29 +91,43 @@ function Navbar() {
           <Link to="/profile" onClick={closeMenu}>Profile</Link>
         </li>
 
-        {/* Login/Register live here too so they're reachable on mobile */}
+        {/* Auth links live here too so they're reachable on mobile */}
         <li className="mobile-auth">
-          <Link to="/login" className="login" onClick={closeMenu}>
-            Login
-          </Link>
+          {isLoggedIn ? (
+            <button type="button" className="logout" onClick={handleLogout}>
+              <FaSignOutAlt /> Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="login" onClick={closeMenu}>
+                Login
+              </Link>
 
-          <Link to="/register" className="register" onClick={closeMenu}>
-            Register
-          </Link>
+              <Link to="/register" className="register" onClick={closeMenu}>
+                Register
+              </Link>
+            </>
+          )}
         </li>
       </ul>
 
 
       <div className="nav-right">
-        <FaSearch className="search" />
+        {isLoggedIn ? (
+          <button type="button" className="logout" onClick={handleLogout}>
+            <FaSignOutAlt /> Logout
+          </button>
+        ) : (
+          <>
+            <Link to="/login" className="login">
+              Login
+            </Link>
 
-        <Link to="/login" className="login">
-          Login
-        </Link>
-
-        <Link to="/register" className="register">
-          Register
-        </Link>
+            <Link to="/register" className="register">
+              Register
+            </Link>
+          </>
+        )}
 
         <div
           className="menu-icon"
