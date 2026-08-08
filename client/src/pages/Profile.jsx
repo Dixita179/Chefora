@@ -1,7 +1,8 @@
 import "./Profile.css";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { FaUtensils, FaHeart, FaVideo, FaEdit, FaTimes, FaCamera } from "react-icons/fa";
+import { FaUtensils, FaHeart, FaVideo, FaEdit, FaTimes, FaCamera, FaUserCircle } from "react-icons/fa";
 
 const API_BASE = "https://chefora-5n7r.onrender.com";
 
@@ -10,6 +11,7 @@ function Profile() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(null);
@@ -18,12 +20,21 @@ function Profile() {
   // Fetch the CURRENT logged-in user's profile + their own recipes on mount
   useEffect(() => {
     const fetchProfileData = async () => {
+      const token = localStorage.getItem("token"); // adjust key if your auth stores it differently
+
+      // Nothing to fetch if there's no session at all — show the
+      // "please log in" state instead of firing a request that will
+      // just fail with a 401.
+      if (!token) {
+        setLoggedIn(false);
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setLoadError(null);
 
       try {
-        const token = localStorage.getItem("token"); // adjust key if your auth stores it differently
-
         const profileRes = await axios.get(`${API_BASE}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -46,7 +57,14 @@ function Profile() {
         setRecipes(mine);
       } catch (err) {
         console.error("Failed to load profile:", err);
-        setLoadError("Couldn't load your profile. Please log in again.");
+
+        // A 401 here means the token is invalid/expired — treat it as
+        // "not logged in" rather than a generic load error.
+        if (err.response?.status === 401) {
+          setLoggedIn(false);
+        } else {
+          setLoadError("Couldn't load your profile. Please try again.");
+        }
       } finally {
         setLoading(false);
       }
@@ -103,6 +121,25 @@ function Profile() {
   };
 
   if (loading) return <div className="profile-page">Loading profile...</div>;
+
+  if (!loggedIn) {
+    return (
+      <div className="profile-page">
+        <div className="profile-logged-out">
+          <FaUserCircle className="profile-logged-out-icon" />
+          <h2>You're not logged in</h2>
+          <p>Log in to see your profile, recipes, and favorites.</p>
+          <div className="profile-logged-out-actions">
+            <Link to="/login" className="edit-btn">Log In</Link>
+            <Link to="/register" className="profile-logged-out-secondary">
+              Create an account
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loadError) return <div className="profile-page">{loadError}</div>;
   if (!profile) return <div className="profile-page">No profile found.</div>;
 
